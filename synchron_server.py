@@ -2,13 +2,11 @@ import pygame
 import os
 import socket
 import time
-HOST = '127.0.0.1'
-PORT = 12200
 
-HOST, PORT = '127.0.0.1', 12200
+HOST, PORT = socket.gethostname(), 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 s.bind ( ( HOST , PORT ) )
-
+print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
 while True:
     s.listen(5)
 
@@ -28,7 +26,7 @@ while True:
             pygame.mixer.music.play()
             while pygame.mixer.music.get_busy() == True:
                 continue
-            
+
     except KeyboardInterrupt:
         client.send(str(True).encode())
         client.close()
