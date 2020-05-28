@@ -1,7 +1,11 @@
 import pygame
 import os
 import socket
-import time
+import time, datetime
+
+pygame.mixer.init()
+
+client_manager = []
 
 HOST, PORT = socket.gethostname(), 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
@@ -12,23 +16,42 @@ while True:
 
     print('The server is running')
     
-    try:
-        while True:
+    if len(client_manager) != 2:
+        try:
             client, address = s.accept()
             print('Connect to {}'.format(address))
 
-            # start
-            Start = True
-            client.send(str(Start).encode())
+            server_clock = round(datetime.datetime.now().timestamp() * 1000)
+            time.sleep(0.1) # man-made delay
+            client.send( str(server_clock).encode() )
 
-            pygame.mixer.init()
-            pygame.mixer.music.load(os.path.join('sound', 'left.wav'))
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy() == True:
-                continue
+            client_clock = int(client.recv(1024).decode())
 
-    except KeyboardInterrupt:
-        client.send(str(True).encode())
-        client.close()
-        break
+            round_trip_time = round(datetime.datetime.now().timestamp() * 1000) - server_clock
+            client_true_clock = client_clock - round_trip_time / 2
+
+            client_manager.append( (client, client_true_clock, round_trip_time) )
+
+        except KeyboardInterrupt:
+            client.send(str(True).encode())
+            client.close()
+            break
+
+    else:
+        start = input("Enter any key to start")
+        tic = time.clock()
+        offset = 500
+        for cli in client_manager:
+            toc = time.clock()
+            loop_delay = toc - tic
+            cli[0].send( str(cli[1] + int(cli[2] / 2) + offset - round(loop_delay * 1000) ).encode() )
+        
+        try:
+            while True:
+                pass
+        except KeyboardInterrupt:
+            for cli in client_manager:
+                cli[0].close()
+            break
+
 s.close()
