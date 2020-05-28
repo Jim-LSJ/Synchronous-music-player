@@ -30,9 +30,7 @@ while True:
                 continue
         else:
             pass
-
-    # consumption: round trip time / 2 = transmission delay ==> clock_1 match (clock_2 - transmission delay)
-        
+  
     # Start = bool(s.recv(1024).decode())
     # Break = False
     # print(Start, type(Start))
