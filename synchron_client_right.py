@@ -6,7 +6,7 @@ import time, datetime
 pygame.mixer.init()
 pygame.mixer.music.load(os.path.join('sound', 'right.wav'))
 
-HOST = '192.168.137.1'
+HOST = '192.168.168.12'
 PORT = 12200
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

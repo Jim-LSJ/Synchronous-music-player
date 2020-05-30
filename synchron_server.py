@@ -9,7 +9,7 @@ client_manager = []
 
 HOST, PORT = socket.gethostname(), 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-s.bind(('192.168.168.12', PORT))
+s.bind((HOST, PORT))
 print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
 while True:
     s.listen(5)
