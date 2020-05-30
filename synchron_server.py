@@ -9,7 +9,7 @@ client_manager = []
 
 HOST, PORT = socket.gethostname(), 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-s.bind((HOST, PORT))
+s.bind(('192.168.168.12', PORT))
 print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
 while True:
     s.listen(5)
@@ -22,13 +22,13 @@ while True:
             client, address = s.accept()
             print('Connect to {}'.format(address))
 
-            server_clock = round(datetime.datetime.now().timestamp() * 1000)
+            server_clock = round(time.time() * 1000)
 
             client.send( str(server_clock).encode() )
 
             client_clock = int(client.recv(1024).decode())
 
-            round_trip_time = round(datetime.datetime.now().timestamp() * 1000) - server_clock
+            round_trip_time = round(time.time() * 1000) - server_clock
             client_true_clock = client_clock - round_trip_time / 2
 
             clock_gap = client_true_clock - server_clock
@@ -42,8 +42,8 @@ while True:
 
     else:
         start = input("Enter any key to start")
-        timestamp_now = datetime.datetime.now().timestamp() * 1000
-        offset = 500
+        timestamp_now = time.time() * 1000
+        offset = 1000
         for cli in client_manager:
             # toc = time.clock()
             # loop_delay = toc - tic
