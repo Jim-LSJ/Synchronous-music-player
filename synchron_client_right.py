@@ -8,7 +8,6 @@ def counter():
     count = 1
     add = False
     while True:
-        # print(time.process_time())
         if (round(time.time() * 10) % 10 == 9 and not add):
             print('\r{:5d}'.format(count), end='')
             count += 1
