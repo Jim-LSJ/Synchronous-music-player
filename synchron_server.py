@@ -15,7 +15,7 @@ while True:
     s.listen(5)
 
     print('The server is running')
-    # max_time = 0
+    max_time = 0
 
     if len(client_manager) != 2:
         try:
@@ -34,7 +34,9 @@ while True:
             clock_gap = client_true_clock - server_clock
 
             client_manager.append((client, clock_gap, round_trip_time))
-            # max_time = round_trip_time if round_trip_time > max_time else max_time
+            
+            max_time = round_trip_time if round_trip_time > max_time else max_time
+        
         except KeyboardInterrupt:
             client.send(str(True).encode())
             client.close()
@@ -43,18 +45,29 @@ while True:
     else:
         start = input("Enter any key to start")
         timestamp_now = time.time() * 1000
-        offset = 1000
+        offset = max_time + 1000
         for cli in client_manager:
-            # toc = time.clock()
-            # loop_delay = toc - tic
             cli[0].send( str(timestamp_now + cli[1] + offset).encode() )
 
+        play_flag = True
         try:
             while True:
-                pass
+                if play_flag:
+                    control = input('Press Enter to pause')
+                    for cli in client_manager:
+                        cli[0].send(str('pause').encode())
+                    play_flag = False
+                else:
+                    control = input('Press Enter to play')
+                    for cli in client_manager:
+                        cli[0].send(str('play').encode())
+                    play_flag = True
+
         except KeyboardInterrupt:
             for cli in client_manager:
+                cli[0].send(str('stop').encode())
                 cli[0].close()
+                s.close()
             break
 
 s.close()

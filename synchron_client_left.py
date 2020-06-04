@@ -16,10 +16,10 @@ def counter():
             add = False
 
 
-pygame.mixer.init()
+pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
 pygame.mixer.music.load(os.path.join('sound', 'left.mp3'))
 
-HOST = '192.168.168.12'
+HOST = '127.0.1.1'
 PORT = 12200
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -38,25 +38,26 @@ while True:
 
     while round(time.time() * 1000) < start_time:
         continue
-    pygame.mixer.music.play(loops=0, start=1.0)
+    print(round(time.time() * 1000))
+    pygame.mixer.music.play(loops=0, start=0.0)
+    print(round(time.time() * 1000))
 
-    # counter()
+    server.settimeout(1)
+    flag = 0
     while pygame.mixer.music.get_busy() == True:
+        try:
+            flag = server.recv(1024).decode()
+            if flag == 'stop':
+                flag = 1
+                break
+            elif flag == 'pause':
+                pygame.mixer.music.pause()
+            elif flag == 'play':
+                pygame.mixer.music.unpause()
+        except socket.timeout:
+            pass
         continue
-
-    # Start = bool(s.recv(1024).decode())
-    # Break = False
-    # print(Start, type(Start))
-    # if Start:
-    # pygame.mixer.music.load(os.path.join('sound', 'right.wav'))
-    # pygame.mixer.music.play()
-    # while pygame.mixer.music.get_busy() == True:
-    #     Break = bool(s.recv(1024).decode())
-    #     if Break:
-    #         break
-    #     continue
-
-    # if Break:
-    # break
+    if flag:
+        break
 
 server.close()
