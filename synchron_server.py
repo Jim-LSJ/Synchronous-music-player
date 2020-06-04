@@ -7,7 +7,7 @@ pygame.mixer.init()
 
 client_manager = []
 
-HOST, PORT = socket.gethostname(), 12200
+HOST, PORT = '172.20.10.2', 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 s.bind((HOST, PORT))
 print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
@@ -45,7 +45,7 @@ while True:
     else:
         start = input("Enter any key to start")
         timestamp_now = time.time() * 1000
-        offset = max_time + 1000
+        offset = max_time + 100
         for cli in client_manager:
             cli[0].send( str(timestamp_now + cli[1] + offset).encode() )
 
@@ -54,13 +54,17 @@ while True:
             while True:
                 if play_flag:
                     control = input('Press Enter to pause')
+                    timestamp_now = time.time() * 1000
+                    offset = max_time + 100
                     for cli in client_manager:
-                        cli[0].send(str('pause').encode())
+                        cli[0].send( ('pause,' + str(timestamp_now + cli[1] + offset)).encode())
                     play_flag = False
                 else:
                     control = input('Press Enter to play')
+                    timestamp_now = time.time() * 1000
+                    offset = max_time + 100
                     for cli in client_manager:
-                        cli[0].send(str('play').encode())
+                        cli[0].send(('play,' + str(timestamp_now + cli[1] + offset)).encode())
                     play_flag = True
 
         except KeyboardInterrupt:
