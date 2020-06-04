@@ -51,14 +51,14 @@ while True:
                 flag = 1
                 break
             elif flag[0] == 'pause':
-                pause_time = flag[1]
+                pause_time = int(round(float(flag[1])))
                 print(pause_time)
 
                 while round(time.time() * 1000) < pause_time:
                     continue
                 pygame.mixer.music.pause()
             elif flag[0] == 'play':
-                unpause_time = flag[1]
+                unpause_time = int(round(float(flag[1])))
                 print(unpause_time)
 
                 while round(time.time() * 1000) < unpause_time:
