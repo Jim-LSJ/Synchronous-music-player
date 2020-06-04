@@ -1,7 +1,8 @@
 from pydub import AudioSegment
- 
-sound=AudioSegment.from_wav('chopin.wav')
+import sys
+
+sound=AudioSegment.from_wav(sys.argv[1])
 sounds = sound.split_to_mono()
 
-sounds[0].export('chopin_left.wav')
-sounds[1].export('chopin_right.wav')
+sounds[0].export(sys.argv[1].split('.')[0] + '_left.wav', format="wav")
+sounds[1].export(sys.argv[1].split('.')[0] + '_right.wav', format="wav")
