@@ -17,7 +17,7 @@ import time, datetime
 
 
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
-idx=0
+idx=1
 music_list = os.listdir('sound_left')
 list_len = len(music_list)
 
