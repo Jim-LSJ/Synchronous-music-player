@@ -45,7 +45,7 @@ while True:
     else:
         start = input("Enter any key to start")
         start_time = time.time() * 1000
-        offset = max_time + 500
+        offset = max_time / 2 + 100
         for cli in client_manager:
             cli[0].send( str(start_time + cli[1] + offset).encode() )
 
@@ -64,7 +64,7 @@ while True:
                         max_time = rtt if rtt > max_time else max_time
                     timestamp_now = time.time() * 1000
                     play_time = play_time + timestamp_now - start_time
-                    offset = max_time + 200
+                    offset = max_time / 2 + 100
                     for cli in client_manager:
                         cli[0].send( str(timestamp_now + cli[1] + offset).encode())
                     play_flag = False
@@ -79,7 +79,7 @@ while True:
                         max_time = rtt if rtt > max_time else max_time
                     timestamp_now = time.time() * 1000
                     start_time = timestamp_now
-                    offset = max_time + 200
+                    offset = max_time / 2 + 100
                     for cli in client_manager:
                         cli[0].send((str(timestamp_now + cli[1] + offset) + ',' + str(play_time)).encode())
                     play_flag = True
