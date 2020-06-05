@@ -17,7 +17,7 @@ import time, datetime
 
 
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
-pygame.mixer.music.load(os.path.join('sound', 'ThoseWereTheDays_voice.mp3'))
+pygame.mixer.music.load(os.path.join('sound', 'left.mp3'))
 
 HOST = '172.20.10.2'
 PORT = 12200

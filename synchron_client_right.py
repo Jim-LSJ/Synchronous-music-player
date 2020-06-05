@@ -17,7 +17,7 @@ import time, datetime
 
 
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
-pygame.mixer.music.load(os.path.join('sound', 'ThoseWereTheDays_background.mp3'))
+pygame.mixer.music.load(os.path.join('sound', 'right.mp3'))
 
 HOST = '172.20.10.2'
 PORT = 12200
@@ -72,7 +72,7 @@ while True:
                 music_pos = pygame.mixer.music.get_pos()
                 unpause_pos = int(round(float(play_param[1])))
                 unapuse_time = unpause_time + music_pos - unpause_pos
-                
+
                 print(unpause_time)
 
                 while round(time.time() * 1000) < unpause_time:
