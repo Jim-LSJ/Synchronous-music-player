@@ -75,6 +75,18 @@ while True:
                     client_manager[1][0].send('-'.encode())
                     continue
                 elif control == "next":
+                    max_time = 0
+                    for cli in client_manager:
+                        server_clock = round(time.time() * 1000)
+                        cli[0].send( ('next,' + str(server_clock)).encode())
+                        client_clock = int(cli[0].recv(1024).decode())
+                        rtt = round(time.time() * 1000) - server_clock
+                        max_time = rtt if rtt > max_time else max_time
+                    timestamp_now = time.time() * 1000
+                    play_time = play_time + timestamp_now - start_time
+                    offset = max_time / 2 + 100
+                    for cli in client_manager:
+                        cli[0].send(str(timestamp_now + cli[1] + offset).encode())
                     continue
                 if play_flag:
                     max_time = 0

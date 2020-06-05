@@ -90,6 +90,26 @@ while True:
                     volume = 0
                 pygame.mixer.music.set_volume(volume)# default = 1.0, range = 0.0~1.0
             elif flag[0] == 'next':
+                pygame.mixer.music.stop()
+                pygame.mixer.music.load(os.path.join('sound', 'ThoseWereTheDays_voice.mp3'))
+
+                server_clock = int(round(float(flag[1])))
+                client_clock = round(time.time() * 1000)
+                server.send( str(client_clock).encode() )
+
+                play_param = server.recv(1024).decode().split(',')
+                unpause_time = int(round(float(play_param[0])))
+                
+                music_pos = pygame.mixer.music.get_pos()
+                unpause_pos = int(round(float(play_param[1])))
+                unapuse_time = unpause_time + music_pos - unpause_pos
+
+                print(unpause_time)
+
+                while round(time.time() * 1000) < unpause_time:
+                    continue
+                
+                pygame.mixer.music.play()
                 pass
             
         except socket.timeout:
