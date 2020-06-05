@@ -45,7 +45,7 @@ while True:
     else:
         start = input("Enter any key to start")
         start_time = time.time() * 1000
-        offset = max_time + 100
+        offset = max_time + 500
         for cli in client_manager:
             cli[0].send( str(start_time + cli[1] + offset).encode() )
 
@@ -55,19 +55,33 @@ while True:
             while True:
                 if play_flag:
                     control = input('Press Enter to pause')
+                    max_time = 0
+                    for cli in client_manager:
+                        server_clock = round(time.time() * 1000)
+                        cli[0].send( ('pause,' + str(server_clock)).encode())
+                        client_clock = int(cli[0].recv(1024).decode())
+                        rtt = round(time.time() * 1000) - server_clock
+                        max_time = rtt if rtt > max_time else max_time
                     timestamp_now = time.time() * 1000
                     play_time = play_time + timestamp_now - start_time
-                    offset = max_time + 100
+                    offset = max_time + 200
                     for cli in client_manager:
-                        cli[0].send( ('pause,' + str(timestamp_now + cli[1] + offset)).encode())
+                        cli[0].send( str(timestamp_now + cli[1] + offset).encode())
                     play_flag = False
                 else:
                     control = input('Press Enter to play')
+                    max_time = 0
+                    for cli in client_manager:
+                        server_clock = round(time.time() * 1000)
+                        cli[0].send( ('pause,' + str(server_clock)).encode())
+                        client_clock = int(cli[0].recv(1024).decode())
+                        rtt = round(time.time() * 1000) - server_clock
+                        max_time = rtt if rtt > max_time else max_time
                     timestamp_now = time.time() * 1000
                     start_time = timestamp_now
-                    offset = max_time + 100
+                    offset = max_time + 200
                     for cli in client_manager:
-                        cli[0].send(('play,' + str(timestamp_now + cli[1] + offset) + ',' + str(play_time)).encode())
+                        cli[0].send((str(timestamp_now + cli[1] + offset) + ',' + str(play_time)).encode())
                     play_flag = True
 
         except KeyboardInterrupt:

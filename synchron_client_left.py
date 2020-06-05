@@ -51,19 +51,28 @@ while True:
                 flag = 1
                 break
             elif flag[0] == 'pause':
-                pause_time = int(round(float(flag[1])))
+                server_clock = int(round(float(flag[1])))
+                client_clock = round(time.time() * 1000)
+                server.send( str(client_clock).encode() )
+
+                pause_time = int(round(float(server.recv(1024).decode())))
                 print(pause_time)
 
                 while round(time.time() * 1000) < pause_time:
                     continue
                 pygame.mixer.music.pause()
             elif flag[0] == 'play':
-                unpause_time = int(round(float(flag[1])))
+                server_clock = int(round(float(flag[1])))
+                client_clock = round(time.time() * 1000)
+                server.send( str(client_clock).encode() )
+
+                play_param = server.recv(1024).decode().split(',')
+                unpause_time = int(round(float(play_param[0])))
                 print(unpause_time)
 
                 while round(time.time() * 1000) < unpause_time:
                     continue
-                pygame.mixer.music.play(loops=0, start=float(flag[2]) / 1000)
+                pygame.mixer.music.play(loops=0, start=float(play_param[1]) / 1000)
         except socket.timeout:
             pass
         continue
