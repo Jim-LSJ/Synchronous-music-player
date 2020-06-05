@@ -98,15 +98,11 @@ while True:
                 server.send( str(client_clock).encode() )
 
                 play_param = server.recv(1024).decode().split(',')
-                unpause_time = int(round(float(play_param[0])))
-                
-                music_pos = pygame.mixer.music.get_pos()
-                unpause_pos = int(round(float(play_param[1])))
-                unapuse_time = unpause_time + music_pos - unpause_pos
+                play_time = int(round(float(play_param[0])))
 
-                print(unpause_time)
+                print(play_time)
 
-                while round(time.time() * 1000) < unpause_time:
+                while round(time.time() * 1000) < play_time:
                     continue
                 
                 pygame.mixer.music.play()
