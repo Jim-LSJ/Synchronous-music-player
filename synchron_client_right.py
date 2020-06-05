@@ -58,8 +58,8 @@ while True:
                 pause_time = int(round(float(server.recv(1024).decode())))
                 print(pause_time)
 
-                while round(time.time() * 1000) < pause_time:
-                    continue
+                # while round(time.time() * 1000) < pause_time:
+                #     continue
                 pygame.mixer.music.pause()
             elif flag[0] == 'play':
                 server_clock = int(round(float(flag[1])))
@@ -75,8 +75,8 @@ while True:
 
                 print(unpause_time)
 
-                while round(time.time() * 1000) < unpause_time:
-                    continue
+                # while round(time.time() * 1000) < unpause_time:
+                #     continue
                 pygame.mixer.music.unpause()# play(loops=0, start=float(play_param[1]) / 1000)
 
             elif flag[0] == '+':
