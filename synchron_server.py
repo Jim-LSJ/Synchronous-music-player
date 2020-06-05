@@ -53,8 +53,30 @@ while True:
         play_flag = True
         try:
             while True:
+                control = input("Control")
+                if control == "+":
+                    for cli in client_manager:
+                        cli[0].send('+'.encode())
+                    continue
+                elif control == "-":
+                    for cli in client_manager:
+                        cli[0].send('-'.encode())
+                    continue
+                elif control == "l+":
+                    client_manager[0][0].send('+'.encode())
+                    continue
+                elif control == "l-":
+                    client_manager[0][0].send('-'.encode())
+                    continue
+                elif control == "r+":
+                    client_manager[1][0].send('+'.encode())
+                    continue
+                elif control == "r-":
+                    client_manager[1][0].send('-'.encode())
+                    continue
+                elif control == "next":
+                    continue
                 if play_flag:
-                    control = input('Press Enter to pause')
                     max_time = 0
                     for cli in client_manager:
                         server_clock = round(time.time() * 1000)
@@ -69,7 +91,6 @@ while True:
                         cli[0].send( str(timestamp_now + cli[1] + offset).encode())
                     play_flag = False
                 else:
-                    control = input('Press Enter to play')
                     max_time = 0
                     for cli in client_manager:
                         server_clock = round(time.time() * 1000)

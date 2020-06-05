@@ -78,6 +78,20 @@ while True:
                 while round(time.time() * 1000) < unpause_time:
                     continue
                 pygame.mixer.music.unpause()# play(loops=0, start=float(play_param[1]) / 1000)
+
+            elif flag[0] == '+':
+                volume = pygame.mixer.music.get_volume() + 0.1
+                if volume > 1:
+                    volume = 1
+                pygame.mixer.music.set_volume(volume)# default = 1.0, range = 0.0~1.0
+            elif flag[0] == '-':
+                volume = pygame.mixer.music.get_volume() - 0.1
+                if volume < 0:
+                    volume = 0
+                pygame.mixer.music.set_volume(volume)# default = 1.0, range = 0.0~1.0
+            elif flag[0] == 'next':
+                pass
+            
         except socket.timeout:
             pass
         continue
