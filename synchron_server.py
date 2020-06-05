@@ -73,7 +73,7 @@ while True:
                     max_time = 0
                     for cli in client_manager:
                         server_clock = round(time.time() * 1000)
-                        cli[0].send( ('pause,' + str(server_clock)).encode())
+                        cli[0].send( ('play,' + str(server_clock)).encode())
                         client_clock = int(cli[0].recv(1024).decode())
                         rtt = round(time.time() * 1000) - server_clock
                         max_time = rtt if rtt > max_time else max_time

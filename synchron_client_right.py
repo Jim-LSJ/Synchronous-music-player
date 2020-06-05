@@ -72,7 +72,7 @@ while True:
 
                 while round(time.time() * 1000) < unpause_time:
                     continue
-                pygame.mixer.music.play(loops=0, start=float(play_param[1]) / 1000)
+                pygame.mixer.music.unpause()# play(loops=0, start=float(play_param[1]) / 1000)
         except socket.timeout:
             pass
         continue
