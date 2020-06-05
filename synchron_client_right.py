@@ -17,22 +17,23 @@ import time, datetime
 
 
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
-pygame.mixer.music.load(os.path.join('sound', 'right.mp3'))
+idx=0
+music_list = os.listdir('sound_right')
+list_len = len(music_list)
 
-HOST = '172.20.10.2'
+HOST = '127.0.0.1'
 PORT = 12200
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.connect((HOST, PORT))
 print('Connect to server')
+server_clock = int(server.recv(1024).decode())
+
+client_clock = round(time.time() * 1000)
+
+server.send( str(client_clock).encode() )
 while True:
-
-    server_clock = int(server.recv(1024).decode())
-
-    client_clock = round(time.time() * 1000)
-
-    server.send( str(client_clock).encode() )
-
+    pygame.mixer.music.load(os.path.join('sound_right',music_list[idx]))
 
     start_time = int(round(float(server.recv(1024).decode())))
     print(start_time)
@@ -43,12 +44,11 @@ while True:
 
     # counter()
     server.settimeout(1)
-    flag = 0
+    stop_flag = 1
     while pygame.mixer.music.get_busy() == True:
         try:
             flag = server.recv(1024).decode().split(',')
             if flag[0] == 'stop':
-                flag = 1
                 break
             elif flag[0] == 'pause':
                 server_clock = int(round(float(flag[1])))
@@ -90,12 +90,18 @@ while True:
                     volume = 0
                 pygame.mixer.music.set_volume(volume)# default = 1.0, range = 0.0~1.0
             elif flag[0] == 'next':
-                pass
-            
+                idx+=1
+                if idx >= list_len:
+                    idx = 0
+                stop_flag = 0
+                break
         except socket.timeout:
             pass
         continue
-    if flag:
+    print("music_stop")
+    pygame.mixer.music.stop()
+    if stop_flag:
+        print("program stop")
         break
     
 

@@ -7,7 +7,7 @@ pygame.mixer.init()
 
 client_manager = []
 
-HOST, PORT = '172.20.10.2', 12200
+HOST, PORT = '127.0.0.1', 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 s.bind((HOST, PORT))
 print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
@@ -75,6 +75,10 @@ while True:
                     client_manager[1][0].send('-'.encode())
                     continue
                 elif control == "next":
+                    start_time = time.time() * 1000
+                    for cli in client_manager:
+                        cli[0].send('next'.encode())
+                        cli[0].send( str(start_time + cli[1] + offset).encode() )
                     continue
                 if play_flag:
                     max_time = 0
