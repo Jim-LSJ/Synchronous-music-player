@@ -21,7 +21,7 @@ idx=0
 music_list = os.listdir('sound_left')
 list_len = len(music_list)
 
-HOST = '127.0.0.1'
+HOST = '172.20.10.2'
 PORT = 12200
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

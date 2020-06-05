@@ -7,7 +7,7 @@ pygame.mixer.init()
 
 client_manager = []
 
-HOST, PORT = '127.0.0.1', 12200
+HOST, PORT = '172.20.10.2', 12200
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 s.bind((HOST, PORT))
 print('HOST: {}, PORT: {}'.format(socket.gethostbyname(socket.gethostname()), PORT))
