@@ -44,10 +44,10 @@ while True:
 
     else:
         start = input("Enter any key to start")
-        timestamp_now = time.time() * 1000
+        start_time = time.time() * 1000
         offset = max_time + 100
         for cli in client_manager:
-            cli[0].send( str(timestamp_now + cli[1] + offset).encode() )
+            cli[0].send( str(start_time + cli[1] + offset).encode() )
 
         play_flag = True
         try:
@@ -55,6 +55,7 @@ while True:
                 if play_flag:
                     control = input('Press Enter to pause')
                     timestamp_now = time.time() * 1000
+                    pause_time = timestamp_now - start_time
                     offset = max_time + 100
                     for cli in client_manager:
                         cli[0].send( ('pause,' + str(timestamp_now + cli[1] + offset)).encode())
@@ -64,7 +65,7 @@ while True:
                     timestamp_now = time.time() * 1000
                     offset = max_time + 100
                     for cli in client_manager:
-                        cli[0].send(('play,' + str(timestamp_now + cli[1] + offset)).encode())
+                        cli[0].send(('play,' + str(timestamp_now + cli[1] + offset) + ',' + str(pause_time)).encode())
                     play_flag = True
 
         except KeyboardInterrupt:
