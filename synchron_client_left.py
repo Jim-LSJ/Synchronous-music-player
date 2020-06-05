@@ -4,20 +4,20 @@ import socket
 import time, datetime
 
 
-def counter():
-    count = 1
-    add = False
-    while True:
-        if (round(time.time() * 10) % 10 == 9 and not add):
-            print('\r{:5d}'.format(count), end='')
-            count += 1
-            add = True
-        if (round(time.time() * 10) % 10 != 9):
-            add = False
+# def counter():
+#     count = 1
+#     add = False
+#     while True:
+#         if (round(time.time() * 10) % 10 == 9 and not add):
+#             print('\r{:5d}'.format(count), end='')
+#             count += 1
+#             add = True
+#         if (round(time.time() * 10) % 10 != 9):
+#             add = False
 
 
 pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=4096 * 16)
-pygame.mixer.music.load(os.path.join('sound', 'left.mp3'))
+pygame.mixer.music.load(os.path.join('sound', 'ThoseWereTheDays_voice.mp3'))
 
 HOST = '172.20.10.2'
 PORT = 12200
