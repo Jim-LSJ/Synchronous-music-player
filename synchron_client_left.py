@@ -38,8 +38,8 @@ while True:
     start_time = int(round(float(server.recv(1024).decode())))
     print(start_time)
 
-    while round(time.time() * 1000) < start_time:
-        continue
+    # while round(time.time() * 1000) < start_time:
+    #     continue
     pygame.mixer.music.play(loops=0, start=0.0)
 
     # counter()
